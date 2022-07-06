@@ -1,7 +1,54 @@
 @extends('layouts.front')
 @section('content')
-    <div class="col-lg-9 mb-2">
+    <div class="col-lg-8 mb-2">
         <div id='map' style="height:50em;"></div>
+    </div>
+    <div class="col-lg-4 mb-1 mt-2">
+        <div class="row flex-grow">
+            <div class="col-xl-12">
+                <select onchange="cari(this.value)" class="form-control selectpicker align-items-center mb-3"
+                    data-live-search="true" name="company_id">
+                    <option value="">---- Pilih Wisata ----</option>
+                    @foreach ($keyword as $key)
+                        <option value="{{ $key->id_wisata }}">{{ $key->nama }}</option>
+                        <option value="{{ $key->id_wisata }}">{{ $key->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12 d-inline text-center">
+                @foreach ($sensor as $sen)
+                    <div class="card col-md-12 p-0">
+                        <div class="card-header pb-0 bg-primary" style="font-size: 1em;">
+                            <p>Jumlah Pengunjung Masuk</p>
+                        </div>
+                        <div class="card-body pt-2">
+                            <p><strong>Total</strong></p>
+                            <h3>{{ $sen->keluar }}</h3>
+                        </div>
+                    </div>
+                    <div class="card col-md-12 p-0">
+                        <div class="card-header pb-0 bg-success" style="font-size: 1em;">
+                            <p>Jumlah Pengunjung Keluar</p>
+                        </div>
+                        <div class="card-body pt-2">
+                            <p><strong>Total</strong></p>
+                            <h3>{{ $sen->masuk }}</h3>
+                        </div>
+                    </div>
+                    <div class="card col-md-12 p-0">
+                        <div class="card-header pb-0 bg-danger" style="font-size: 1em;">
+                            <p>Jumlah Pengunjung Saat Ini</p>
+                        </div>
+                        <div class="card-body pt-2">
+                            <p><strong>Total</strong></p>
+                            <h3>{{ $sen->pengunjung }}</h3>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
     <script>
         var peta1 = L.tileLayer(
@@ -46,5 +93,82 @@
             "peta4": peta4
         };
         L.control.layers(baseMaps).addTo(map);
+
+        // var geo = $(this).data('map');
+        var geoLayer;
+        $.getJSON('geojson/map.geojson',
+            function(json) {
+                geoLayer = L.geoJson(json, {
+                    style: function(feature) {
+                        // switch (feature.properties.party) {
+                        //     case 'Republican':
+                        return {
+                            fillOpacity: 0.5,
+                            opacity: 1,
+                            weight: 2,
+                            color: "#ff0000"
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        // var iconLabel = L.divIcon({
+                        //     className: 'label-bidang',
+                        //     html: '<img src="img/icon' + detail[index].icon + '">',
+                        //     iconSize: [100, 20]
+                        // });
+                        // L.marker(layer.getBounds()
+                        //     .getCenter(), {
+                        //         icon: iconLabel
+                        //     }).addTo(map);
+                        // alert(feature.properties.id)
+
+                        layer.on('click', (e) => {
+                            // alert(feature.properties.id);
+                            $.getJSON('wisata/' + feature.properties.id, function(detail) {
+                                //$.each(detail, function(index) {
+                                // alert(detail[index].gambar);
+                                // L.marker(layer.getBounds().getCenter()).addTo(
+                                //     map);
+                                // console.log(detail.lokasi[0]);
+                                var html =
+                                    '<div align="center"><p style="color:#FF0000;  font-family:Helvetica Neue; font-size:25px;" class="text-uppercase"><strong>' +
+                                    detail.lokasi[0].nama +
+                                    '</strong></p>';
+                                html += '<img src="img/' + detail.lokasi[0]
+                                    .gambar +
+                                    '" width="500em" height="350em"></div>';
+                                html +=
+                                    '<div align="center"><p style="color:#FF0000;  font-family:Helvetica Neue; font-size:25px;" class="text-uppercase;"id="jumlah_pengunjung"><strong></strong></p></div>';
+                                var style = {
+                                    'maxWidth': '5000',
+                                }
+                                L.popup(style)
+                                    .setLatLng(layer.getBounds()
+                                        .getCenter())
+                                    .setContent(html)
+                                    .addTo(map);
+                                //});
+                                const count = new countUp.CountUp("jumlah_pengunjung",
+                                    detail
+                                    .sensor[0]
+                                    .pengunjung);
+                                count.start();
+                            });
+                        })
+                        layer.addTo(map);
+                    }
+                });
+            })
+
+        // Script Detail Pencarian
+        function cari(id) {
+            geoLayer.eachLayer(function(layer) {
+                if (layer.feature.properties.id == id) {
+                    map.flyTo(layer.getBounds().getCenter(), 17);
+                    // layer.bindPopup(layer.feature.properties.nama);
+                }
+            });
+        };
+
+        // Script Chart
     </script>
 @endsection

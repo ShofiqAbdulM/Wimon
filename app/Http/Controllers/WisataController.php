@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Wisata;
-use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class WisataController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -28,20 +25,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        $keyword = $this->Wisata->userLokasi(Auth::user()->id);
-
+        // $key = Wisata::allLokasi();
+        // $keyword = $key->pluck(request("search"));
+        $keyword = $this->Wisata->allLokasi();
         return view('home', compact('keyword'));
     }
     public function lokasi($id = '')
     {
-        $sensor = $this->Wisata->getSensor($id);
 
         $lokasi = $this->Wisata->getLokasi($id);
-        return response()->json(['lokasi' => $lokasi, 'sensor' => $sensor]);
+        return json_encode($lokasi);
     }
-    public function edit()
+    public function sensor($id = '')
     {
-        // f;
+        $sensor = $this->Wisata->getSensor($id);
+        return json_encode($sensor);
     }
 }

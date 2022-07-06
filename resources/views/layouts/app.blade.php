@@ -8,16 +8,18 @@
     <title>{{ config('app.name', 'Login') }}</title>
 
     @include('layouts/aset/head')
-    <link rel="stylesheet" href="{{ asset('css') }}/app.css">
+
 </head>
 
 <body class="hold-transition layout-top-nav">
+    @include('sweetalert::alert')
+
     <div class="wrapper">
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand-md navbar-light">
+        <nav class="main-header navbar navbar-expand-md mb-2" style="background-color: #000">
             <div class="container">
-                <a href="{{ route('home') }}" class="navbar-brand">
+                <a href="{{ route('keyword') }}" class="navbar-brand">
                     <img src="{{ asset('img') }}/hori.svg" alt="AdminLTE Logo" class="brand-image elevation-3"
                         style="opacity: .8">
                 </a>
@@ -27,33 +29,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-                    <!-- Left navbar links -->
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Gallery</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Client Us</a>
-                        </li>
-
-                    </ul>
-
-                </div>
 
                 <!-- Right navbar links -->
                 <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">
+                        <a class="nav-link text-white" href="{{ route('login') }}">
                             <i class="fas fa-user mr-1"></i>Login
                         </a>
                     </li>

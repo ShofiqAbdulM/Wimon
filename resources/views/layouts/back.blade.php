@@ -11,6 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>{{ config('back.name', 'Wisata Monitoring Admin') }}</title>
 
     @include('layouts/aset/head')
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -29,31 +30,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile') }}">
+                        <span class="mr-2 d-none d-lg-inline text-dark">{{ Auth::user()->name }}</span>
+                        <figure class="img-profile rounded-circle avatar font-weight-bold"
+                            data-initial="{{ Auth::user()->name[0] }}"></figure>
                     </a>
                 </li>
             </ul>
@@ -63,34 +49,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-danger elevation-4">
             <!-- Brand Logo -->
-            <a href="/home" class="brand-link">
+            <a href="/home" class="brand-link text-center pl-2">
                 <img src="{{ asset('img') }}/wimon.svg" alt="AdminLTE Logo" class="img-circle elevation-3"
                     style="opacity: .8;max-width:3em">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
             </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="/home" class="d-block">{{ Auth::user()->name }}</a>
-                    </div>
-                </div>
 
-                <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image pr-0 ml-auto mr-auto">
+                        <img src="{{ asset('img') }}/{{ Auth::user()->image }}" class="img-circle elevation-2"
+                            alt="User Image">
+                    </div>
+                    <div class="info pl-0 ml-0 mr-5">
+                        <a href="{{ route('keyword') }}" class="d-block"> {{ Auth::user()->name }}
+                        </a>
                     </div>
                 </div>
 
@@ -98,8 +73,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
                             <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -115,33 +88,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="/profile" class="nav-link">
                                         <i class="fas fa-image nav-icon"></i>
-                                        <p>Gallery</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-address-book nav-icon"></i>
-                                        <p>About Us</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-user-friends nav-icon"></i>
-                                        <p>Client</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-phone nav-icon"></i>
-                                        <p>Contact</p>
+                                        <p>Profile</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-center" data-toggle="modal" data-target="#logoutModal">
+                            <a href="#" class="nav-link text-center ml-0" data-toggle="modal"
+                                data-target="#logoutModal">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
                                     {{ __('LogOut') }}
@@ -161,25 +117,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Starter Page</h1>
-                        </div><!-- /.col -->
-
+                        @yield('content')
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
-
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        @yield('content')
-                    </div>
-                    <!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
 
@@ -231,8 +173,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('AdminLTE') }}/plugins/jsgrid/jsgrid.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('AdminLTE') }}/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('AdminLTE') }}/dist/js/demo.js"></script>
+
     <!-- Page specific script -->
     <script>
         $(function() {
