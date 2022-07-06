@@ -18,18 +18,23 @@ class FrontController extends Controller
     {
         $keyword = $this->Wisata->allLokasi();
 
-        $sensor = $this->Wisata->getSensor($keyword[0]->id_wisata);
-
-
-        return view('frontend.wisata', compact('keyword'), compact('sensor'));
+        return view('frontend.wisata', ['keyword' => $keyword]);
     }
-
 
     public function lokasi($id = '')
     {
-        $sensor = $this->Wisata->getSensor($id);
-
+        //$sensor = $this->Wisata->getSensor($id);
         $lokasi = $this->Wisata->getLokasi($id);
-        return response()->json(['lokasi' => $lokasi, 'sensor' => $sensor]);
+
+        $sensor_masuk = $this->Wisata->getSensorMasuk($lokasi[0]->id_wisata);
+        $sensor_keluar = $this->Wisata->getSensorKeluar($lokasi[0]->id_wisata);
+        $total_pengunjung_saat_ini = $sensor_masuk[0]->jumlah_masuk - $sensor_keluar[0]->jumlah_keluar;
+
+        if ($total_pengunjung_saat_ini <= 0) {
+            $pengunjung = 0;
+        } else {
+            $pengunjung = $total_pengunjung_saat_ini;
+        }
+        return response()->json(['lokasi' => $lokasi, 'sensor_masuk' => $sensor_masuk, 'sensor_keluar' => $sensor_keluar, 'pengunjung' => $pengunjung]);
     }
 }

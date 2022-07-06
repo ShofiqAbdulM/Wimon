@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sensor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 
 class SensorController extends Controller
@@ -14,12 +15,11 @@ class SensorController extends Controller
         $this->Sensor = new Sensor();
     }
 
-    public function updateSensor(Request $request)
+    public function tambahSensorMasuk(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id_wisata' => 'required',
-            'masuk' => 'required',
-            'keluar' => 'required'
+            'jumlah_masuk' => 'required'
         ]);
         if ($validator->fails()) {
             $respon = [
@@ -30,11 +30,40 @@ class SensorController extends Controller
             return response()->json($respon, 401);
         }
 
-        $pengunjung = $request->masuk - $request->keluar;
-        $sensor = $this->Sensor->updateSensor($request->id_wisata, $request->masuk, $request->keluar, $pengunjung);
+
+        $tgl_masuk = Carbon::now();
+        //$pengunjung = $request->masuk - $request->keluar;
+        $sensor = $this->Sensor->tambahSensorMasuk($request->id_wisata, $request->jumlah_masuk, $tgl_masuk);
         return response()->json([
-            'status_code' => 401,
-            'success' => false,
+            'status_code' => 200,
+            'success' => true,
+            'message' => "success",
+            'sensor' => $sensor
+        ]);
+    }
+
+    public function tambahSensorKeluar(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_wisata' => 'required',
+            'jumlah_keluar' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $respon = [
+                'status_code' => 401,
+                'success' => false,
+                'message' => $validator->errors()
+            ];
+            return response()->json($respon, 401);
+        }
+
+
+        $tgl_keluar = Carbon::now();
+        //$pengunjung = $request->masuk - $request->keluar;
+        $sensor = $this->Sensor->tambahSensorKeluar($request->id_wisata, $request->jumlah_keluar, $tgl_keluar);
+        return response()->json([
+            'status_code' => 200,
+            'success' => true,
             'message' => "success",
             'sensor' => $sensor
         ]);

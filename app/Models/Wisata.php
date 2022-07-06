@@ -12,21 +12,34 @@ class Wisata extends Model
     public function getLokasi($id = '')
     {
         $glokasi = DB::table('wisata')
-            ->select('nama', 'alamat', 'gambar', 'map')
-            ->where('id_wisata', $id)
-            ->get(0);
+            ->select('id_wisata', 'nama', 'alamat', 'gambar', 'map')->get();
+
+        // ->select('nama', 'alamat', 'gambar', 'map')
+        // ->where('id_wisata', $id)
+        // ->get();
         return $glokasi;
     }
 
-    public function getSensor($wisata = '')
+    public function getSensorMasuk($wisata = '')
     {
-        $gsensor = DB::table('sensor')
-            ->select('pengunjung', 'masuk', 'keluar')
-            ->join('wisata', 'wisata.id_wisata', '=', 'sensor.id_wisata')
+        $gsensor = DB::table('sensor_masuk')
+            ->select('jumlah_masuk', 'tgl_masuk')
+            ->join('wisata', 'wisata.id_wisata', '=', 'sensor_masuk.id_wisata')
             ->where('wisata.id_wisata', $wisata)
             ->get(0);
         return $gsensor;
     }
+
+    public function getSensorKeluar($wisata = '')
+    {
+        $gsensor = DB::table('sensor_keluar')
+            ->select('jumlah_keluar', 'tgl_keluar')
+            ->join('wisata', 'wisata.id_wisata', '=', 'sensor_keluar.id_wisata')
+            ->where('wisata.id_wisata', $wisata)
+            ->get(0);
+        return $gsensor;
+    }
+
     public function userLokasi($user = '')
     {
         $keyword = DB::table('wisata')

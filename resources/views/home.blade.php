@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="card-body pt-2">
-                            <div class="card-tools text-right mb-2">
+                            <div class="card-tools text-right pt-2 pb-0">
                                 <button type="button" class="btn btn-primary btn-sm btn-flat">
                                     <i class="fas fa-plus mr-2"></i>ADD
                                 </button>
@@ -43,7 +43,6 @@
                                             <th>Nama</th>
                                             <th>Alamat</th>
                                             <th>Image</th>
-                                            <th>Map</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -54,7 +53,6 @@
                                             <td>{{ $keey->alamat }}</td>
                                             <td style="width: 10em"> <img src="{{ asset('img') }}/{{ $keey->gambar }}"
                                                     alt="{{ $keey->nama }}" style="max-width: 10em"></td>
-                                            <td>{{ $keey->map }}</td>
 
                                         </tr>
                                     </tbody>

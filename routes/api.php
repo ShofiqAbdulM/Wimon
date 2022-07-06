@@ -19,4 +19,5 @@ use App\Http\Controllers\SensorController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/sensor', [SensorController::class, 'updateSensor'])->name('sensor.update');
+Route::post('/sensor-masuk', [SensorController::class, 'tambahSensorMasuk'])->name('sensor.masuk.tambah');
+Route::post('/sensor-keluar', [SensorController::class, 'tambahSensorKeluar'])->name('sensor.keluar.tambah');

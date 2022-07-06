@@ -1,7 +1,7 @@
 @extends('layouts.front')
 @section('content')
     <div class="col-lg-8 mb-2">
-        <div id='map' style="height:50em;"></div>
+        <div id='map' style="height:56em;"></div>
     </div>
     <div class="col-lg-4 mb-1 mt-2">
         <div class="row flex-grow">
@@ -11,42 +11,44 @@
                     <option value="">---- Pilih Wisata ----</option>
                     @foreach ($keyword as $key)
                         <option value="{{ $key->id_wisata }}">{{ $key->nama }}</option>
-                        <option value="{{ $key->id_wisata }}">{{ $key->nama }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-12 d-inline text-center">
-                @foreach ($sensor as $sen)
-                    <div class="card col-md-12 p-0">
-                        <div class="card-header pb-0 bg-primary" style="font-size: 1em;">
-                            <p>Jumlah Pengunjung Masuk</p>
-                        </div>
-                        <div class="card-body pt-2">
-                            <p><strong>Total</strong></p>
-                            <h3>{{ $sen->keluar }}</h3>
-                        </div>
+                {{-- @foreach ($sensor as $sen) --}}
+                <div class="card col-md-12 p-0">
+                    <div class="card-header pb-0 bg-primary" style="font-size: 1em;">
+                        <p>Jumlah Pengunjung Masuk</p>
                     </div>
-                    <div class="card col-md-12 p-0">
-                        <div class="card-header pb-0 bg-success" style="font-size: 1em;">
-                            <p>Jumlah Pengunjung Keluar</p>
-                        </div>
-                        <div class="card-body pt-2">
-                            <p><strong>Total</strong></p>
-                            <h3>{{ $sen->masuk }}</h3>
-                        </div>
+                    <div class="card-body pt-2">
+                        <p><strong>Total</strong></p>
+                        <input class="h4 text-center" name="masuk" id="masuk" style="border: none" placeholder="null"
+                            readonly>
                     </div>
-                    <div class="card col-md-12 p-0">
-                        <div class="card-header pb-0 bg-danger" style="font-size: 1em;">
-                            <p>Jumlah Pengunjung Saat Ini</p>
-                        </div>
-                        <div class="card-body pt-2">
-                            <p><strong>Total</strong></p>
-                            <h3>{{ $sen->pengunjung }}</h3>
-                        </div>
+                </div>
+                <div class="card col-md-12 p-0">
+                    <div class="card-header pb-0 bg-success" style="font-size: 1em;">
+                        <p>Jumlah Pengunjung Keluar</p>
                     </div>
-                @endforeach
+                    <div class="card-body pt-2">
+                        <p><strong>Total</strong></p>
+                        <input class="h4 text-center" name="keluar" id="keluar" style="border: none" placeholder="null"
+                            readonly>
+                    </div>
+                </div>
+                <div class="card col-md-12 p-0">
+                    <div class="card-header pb-0 bg-danger" style="font-size: 1em;">
+                        <p>Jumlah Pengunjung Saat Ini</p>
+                    </div>
+                    <div class="card-body pt-2">
+                        <p><strong>Total</strong></p>
+                        <input class="h4 text-center" name="saat_ini" id="saat_ini" style="border: none" placeholder="null"
+                            readonly>
+                    </div>
+                </div>
+                {{-- @endforeach --}}
             </div>
         </div>
     </div>
@@ -120,7 +122,6 @@
                         //         icon: iconLabel
                         //     }).addTo(map);
                         // alert(feature.properties.id)
-
                         layer.on('click', (e) => {
                             // alert(feature.properties.id);
                             $.getJSON('wisata/' + feature.properties.id, function(detail) {
@@ -128,7 +129,7 @@
                                 // alert(detail[index].gambar);
                                 // L.marker(layer.getBounds().getCenter()).addTo(
                                 //     map);
-                                // console.log(detail.lokasi[0]);
+                                // console.log(detail.sensor_masuk[0].jumlah_masuk);
                                 var html =
                                     '<div align="center"><p style="color:#FF0000;  font-family:Helvetica Neue; font-size:25px;" class="text-uppercase"><strong>' +
                                     detail.lokasi[0].nama +
@@ -136,8 +137,7 @@
                                 html += '<img src="img/' + detail.lokasi[0]
                                     .gambar +
                                     '" width="500em" height="350em"></div>';
-                                html +=
-                                    '<div align="center"><p style="color:#FF0000;  font-family:Helvetica Neue; font-size:25px;" class="text-uppercase;"id="jumlah_pengunjung"><strong></strong></p></div>';
+
                                 var style = {
                                     'maxWidth': '5000',
                                 }
@@ -147,11 +147,18 @@
                                     .setContent(html)
                                     .addTo(map);
                                 //});
-                                const count = new countUp.CountUp("jumlah_pengunjung",
-                                    detail
-                                    .sensor[0]
-                                    .pengunjung);
-                                count.start();
+                                // const count = new countUp.CountUp("jumlah_pengunjung",
+                                //     detail
+                                //     .sensor[0]
+                                //     .pengunjung);
+                                // count.start();
+                                $("#masuk").val(detail.sensor_masuk[0].jumlah_masuk)
+                                    .keyup();
+                                $("#keluar").val(detail.sensor_keluar[0].jumlah_keluar)
+                                    .keyup();
+                                $("#saat_ini").val(detail.pengunjung).keyup();
+                                // console.log(detail.index.pengunjung);
+
                             });
                         })
                         layer.addTo(map);
