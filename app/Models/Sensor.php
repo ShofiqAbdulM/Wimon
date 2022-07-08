@@ -12,15 +12,13 @@ class Sensor extends Model
 
     public function tambahSensorMasuk($wisata, $jumlah_masuk, $tgl_masuk)
     {
-        $gsensor = DB::table('sensor_masuk')
-            ->insert(['id_wisata' => $wisata, 'jumlah_masuk' => $jumlah_masuk, 'tgl_masuk' => $tgl_masuk]);
+        $gsensor = DB::table('sensor_masuk')->insert(['id_wisata' => $wisata, 'jumlah_masuk' => $jumlah_masuk, 'tgl_masuk' => $tgl_masuk]);
         return $gsensor;
     }
 
     public function tambahSensorKeluar($wisata, $jumlah_keluar, $tgl_keluar)
     {
-        $gsensor = DB::table('sensor_keluar')
-            ->insert(['id_wisata' => $wisata, 'jumlah_keluar' => $jumlah_keluar, 'tgl_keluar' => $tgl_keluar]);
+        $gsensor = DB::table('sensor_keluar')->insert(['id_wisata' => $wisata, 'jumlah_keluar' => $jumlah_keluar, 'tgl_keluar' => $tgl_keluar]);
         return $gsensor;
     }
 }

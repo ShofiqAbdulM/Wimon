@@ -25,6 +25,8 @@ Route::get('/events', [EventFController::class, 'index'])->name('event');
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home/add', [HomeController::class, 'add']);
+Route::get('/home/edit/{id}', [HomeController::class, 'edit']);
 
 // Profile
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

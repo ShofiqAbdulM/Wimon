@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,20 +24,20 @@ class Wisata extends Model
     public function getSensorMasuk($wisata = '')
     {
         $gsensor = DB::table('sensor_masuk')
-            ->select('jumlah_masuk', 'tgl_masuk')
             ->join('wisata', 'wisata.id_wisata', '=', 'sensor_masuk.id_wisata')
             ->where('wisata.id_wisata', $wisata)
-            ->get(0);
+            ->whereDate('sensor_masuk.tgl_masuk', Carbon::now())
+            ->count();
         return $gsensor;
     }
 
     public function getSensorKeluar($wisata = '')
     {
         $gsensor = DB::table('sensor_keluar')
-            ->select('jumlah_keluar', 'tgl_keluar')
             ->join('wisata', 'wisata.id_wisata', '=', 'sensor_keluar.id_wisata')
             ->where('wisata.id_wisata', $wisata)
-            ->get(0);
+            ->whereDate('sensor_keluar.tgl_keluar', Carbon::now())
+            ->count();
         return $gsensor;
     }
 

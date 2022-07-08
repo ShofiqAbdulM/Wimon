@@ -102,8 +102,6 @@
             function(json) {
                 geoLayer = L.geoJson(json, {
                     style: function(feature) {
-                        // switch (feature.properties.party) {
-                        //     case 'Republican':
                         return {
                             fillOpacity: 0.5,
                             opacity: 1,
@@ -152,9 +150,9 @@
                                 //     .sensor[0]
                                 //     .pengunjung);
                                 // count.start();
-                                $("#masuk").val(detail.sensor_masuk[0].jumlah_masuk)
+                                $("#masuk").val(detail.sensor_masuk)
                                     .keyup();
-                                $("#keluar").val(detail.sensor_keluar[0].jumlah_keluar)
+                                $("#keluar").val(detail.sensor_keluar)
                                     .keyup();
                                 $("#saat_ini").val(detail.pengunjung).keyup();
                                 // console.log(detail.index.pengunjung);

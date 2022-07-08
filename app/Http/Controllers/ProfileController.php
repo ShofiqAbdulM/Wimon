@@ -16,7 +16,11 @@ class ProfileController extends Controller
 
     public function index()
     {
-        return view('profile');
+        $data = [
+            'tittle' => 'Home / Profile'
+        ];
+        return view('profile', $data);
+        // return view('profile');
     }
 
     public function update(Request $request)
@@ -27,9 +31,7 @@ class ProfileController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
             'current_password' => 'nullable|required_with:new_password',
             'new_password' => 'nullable|min:8|max:12|required_with:current_password',
-            'password_confirmation' => 'nullable|min:8|max:12|required_with:new_password|same:new_password',
-            'image' => 'nullable|string|max:1024',
-
+            'password_confirmation' => 'nullable|min:8|max:12|required_with:new_password|same:new_password'
         ]);
 
 

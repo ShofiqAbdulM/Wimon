@@ -29,9 +29,12 @@ class HomeController extends Controller
     public function index()
     {
 
+        $data = [
+            'tittle' => 'Home / Wisata'
+        ];
         $keyword = $this->Wisata->userLokasi(Auth::user()->id);
 
-        return view('home', compact('keyword'));
+        return view('home', compact('keyword'), $data);
     }
     public function lokasi($id = '')
     {
@@ -40,8 +43,11 @@ class HomeController extends Controller
         $lokasi = $this->Wisata->getLokasi($id);
         return response()->json(['lokasi' => $lokasi, 'sensor' => $sensor]);
     }
-    public function edit()
+    public function add()
     {
-        // f;
+        $data = [
+            // 'tittle' => 'ADD Wisata'
+        ];
+        return view('wisata.w_add', $data);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sensor;
+use App\Models\Wisata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
@@ -13,6 +14,18 @@ class SensorController extends Controller
     public function __construct()
     {
         $this->Sensor = new Sensor();
+        $this->Wisata = new Wisata();
+    }
+
+    public function getPengunjungMasuk()
+    {
+        $sensor_masuk = $this->Wisata->getSensorMasuk(1);
+        return response()->json([
+            'status_code' => 200,
+            'success' => true,
+            'message' => "success",
+            'sensor' => $sensor_masuk
+        ]);
     }
 
     public function tambahSensorMasuk(Request $request)

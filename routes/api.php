@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/sensor-masuk', [SensorController::class, 'tambahSensorMasuk'])->name('sensor.masuk.tambah');
 Route::post('/sensor-keluar', [SensorController::class, 'tambahSensorKeluar'])->name('sensor.keluar.tambah');
+Route::get('/pengunjung-masuk', [SensorController::class, 'getPengunjungMasuk'])->name('pengunjung.masuk');

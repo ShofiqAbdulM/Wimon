@@ -173,6 +173,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('AdminLTE') }}/plugins/jsgrid/jsgrid.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('AdminLTE') }}/dist/js/adminlte.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/flot/jquery.flot.js"></script>
+    <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+    <script src="{{ asset('AdminLTE') }}/plugins/flot/plugins/jquery.flot.resize.js"></script>
+    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+    <script src="{{ asset('AdminLTE') }}/plugins/flot/plugins/jquery.flot.pie.js"></script>
+    <script src="{{ asset('js') }}/app.js"></script>
 
     <!-- Page specific script -->
     <script>

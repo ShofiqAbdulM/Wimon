@@ -3,7 +3,7 @@
 @section('content')
     <!-- Page Heading -->
     <div class="container">
-        <h1 class="m-0">{{ __('Profile') }}</h1>
+        <h1 class="m-0">{{ 'Home / Profile' }}</h1>
 
         @if (session('success'))
             <div class="alert alert-success border-left-success alert-dismissible fade show mt-2 mb-2" role="alert">

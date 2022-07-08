@@ -23,12 +23,11 @@ class FrontController extends Controller
 
     public function lokasi($id = '')
     {
-        //$sensor = $this->Wisata->getSensor($id);
         $lokasi = $this->Wisata->getLokasi($id);
 
         $sensor_masuk = $this->Wisata->getSensorMasuk($lokasi[0]->id_wisata);
         $sensor_keluar = $this->Wisata->getSensorKeluar($lokasi[0]->id_wisata);
-        $total_pengunjung_saat_ini = $sensor_masuk[0]->jumlah_masuk - $sensor_keluar[0]->jumlah_keluar;
+        $total_pengunjung_saat_ini = $sensor_masuk - $sensor_keluar;
 
         if ($total_pengunjung_saat_ini <= 0) {
             $pengunjung = 0;
