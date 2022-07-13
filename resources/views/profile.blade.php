@@ -25,7 +25,7 @@
         @endif
     </div>
     <div class="container mt-2">
-        <form method="POST" action="{{ route('profile.update') }}" autocomplete="off">
+        <form method="POST" action="{{ route('profile.update') }}" autocomplete="off" enctype="multipart/form-data">
             <div class="row justify-content-center">
 
                 <div class="col-lg-4 order-lg-2 pt-5">
@@ -33,13 +33,13 @@
                     <div class="card shadow mb-4">
                         <div class="card-profile-image mt-4">
                             <div class="text-center">
-                                <img class="image rounded-circle" src="{{ asset('img') }}/{{ Auth::user()->image }}"
-                                    alt="image" style="width: 80%;height: 80%; padding: 10px; margin: 0px; ">
+                                <img class="img-circle" src="{{ asset('img') }}/{{ Auth::user()->image }}"
+                                    alt="image" style="max-width: 85%">
                                 {{-- <img alt=""> --}}
-                                <div class="text-center">
-                                    <button type="file" class="btn btn-primary @error('image') is-invalid @enderror"
-                                        id="image">Change Image
-                                    </button>
+                                <div class="text-center mt-3">
+                                    <input type="file"
+                                        class="col-md-8 p-0 btn btn-primary @error('image') is-invalid @enderror" id="image"
+                                        name="image">
                                     @error('image')
                                         <div class="invalid-feedback">
                                             {{ $message }}

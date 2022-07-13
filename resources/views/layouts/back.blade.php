@@ -11,6 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>{{ config('back.name', 'Wisata Monitoring Admin') }}</title>
 
     @include('layouts/aset/head')
+    @include('sweetalert::alert')
 
 </head>
 
@@ -38,8 +39,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile') }}">
                         <span class="mr-2 d-none d-lg-inline text-dark">{{ Auth::user()->name }}</span>
-                        <figure class="img-profile rounded-circle avatar font-weight-bold"
-                            data-initial="{{ Auth::user()->name[0] }}"></figure>
                     </a>
                 </li>
             </ul>
@@ -57,13 +56,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image pr-0 ml-auto mr-auto">
+                    <div class="image ml-5 mr-2 text-center">
                         <img src="{{ asset('img') }}/{{ Auth::user()->image }}" class="img-circle elevation-2"
                             alt="User Image">
                     </div>
-                    <div class="info pl-0 ml-0 mr-5">
+                    <div class="info pl-0 ml-2 mr-5">
                         <a href="{{ route('keyword') }}" class="d-block"> {{ Auth::user()->name }}
                         </a>
                     </div>
@@ -82,13 +80,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/home" class="nav-link active">
+                                    <a href="/home" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
                                         <i class="fas fa-umbrella-beach nav-icon"></i>
-                                        <p>Home / Wisata</p>
+                                        <p>Wisata</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/profile" class="nav-link">
+                                    <a href="/pengunjung"
+                                        class="nav-link {{ request()->routeIs('pengunjung') ? 'active' : '' }}">
+                                        <i class="fas fa-users nav-icon"></i>
+                                        <p>Pengunjung</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/profile"
+                                        class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
                                         <i class="fas fa-image nav-icon"></i>
                                         <p>Profile</p>
                                     </a>
@@ -149,7 +155,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Apakah Anda Yakin Ingin Keluar</div>
                 <div class="modal-footer">
                     <button class="btn btn-link" type="button" data-dismiss="modal">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" href="{{ route('logout') }}"
@@ -168,6 +174,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('AdminLTE') }}/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('AdminLTE') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/jszip/jszip.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ asset('AdminLTE') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <!-- jsGrid -->
     <script src="{{ asset('AdminLTE') }}/plugins/jsgrid/demos/db.js"></script>
     <script src="{{ asset('AdminLTE') }}/plugins/jsgrid/jsgrid.min.js"></script>
@@ -179,48 +198,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
     <script src="{{ asset('AdminLTE') }}/plugins/flot/plugins/jquery.flot.pie.js"></script>
     <script src="{{ asset('js') }}/app.js"></script>
+    <script>
 
+    </script>
     <!-- Page specific script -->
     <script>
         $(function() {
-            $("#jsGrid1").jsGrid({
-                height: "100%",
-                width: "100%",
-
-                sorting: true,
-                paging: true,
-
-                data: db.clients,
-
-                fields: [{
-                        name: "Name",
-                        type: "text",
-                        width: 150
-                    },
-                    {
-                        name: "Age",
-                        type: "number",
-                        width: 50
-                    },
-                    {
-                        name: "Address",
-                        type: "text",
-                        width: 200
-                    },
-                    {
-                        name: "Country",
-                        type: "select",
-                        items: db.countries,
-                        valueField: "Id",
-                        textField: "Name"
-                    },
-                    {
-                        name: "Married",
-                        type: "checkbox",
-                        title: "Is Married"
-                    }
-                ]
-            });
+            $("#pengunjung").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#pengunjung_wrapper .col-md-6:eq(0)');
         });
     </script>
 </body>

@@ -110,29 +110,15 @@
                         };
                     },
                     onEachFeature: function(feature, layer) {
-                        // var iconLabel = L.divIcon({
-                        //     className: 'label-bidang',
-                        //     html: '<img src="img/icon' + detail[index].icon + '">',
-                        //     iconSize: [100, 20]
-                        // });
-                        // L.marker(layer.getBounds()
-                        //     .getCenter(), {
-                        //         icon: iconLabel
-                        //     }).addTo(map);
-                        // alert(feature.properties.id)
                         layer.on('click', (e) => {
-                            // alert(feature.properties.id);
-                            $.getJSON('wisata/' + feature.properties.id, function(detail) {
-                                //$.each(detail, function(index) {
-                                // alert(detail[index].gambar);
-                                // L.marker(layer.getBounds().getCenter()).addTo(
-                                //     map);
+                            $.getJSON('wisata/' + feature.properties.id, function(
+                                detail) {
                                 // console.log(detail.sensor_masuk[0].jumlah_masuk);
                                 var html =
                                     '<div align="center"><p style="color:#FF0000;  font-family:Helvetica Neue; font-size:25px;" class="text-uppercase"><strong>' +
                                     detail.lokasi[0].nama +
                                     '</strong></p>';
-                                html += '<img src="img/' + detail.lokasi[0]
+                                html += '<img src="gambar/' + detail.lokasi[0]
                                     .gambar +
                                     '" width="500em" height="350em"></div>';
 
@@ -144,12 +130,7 @@
                                         .getCenter())
                                     .setContent(html)
                                     .addTo(map);
-                                //});
-                                // const count = new countUp.CountUp("jumlah_pengunjung",
-                                //     detail
-                                //     .sensor[0]
-                                //     .pengunjung);
-                                // count.start();
+
                                 $("#masuk").val(detail.sensor_masuk)
                                     .keyup();
                                 $("#keluar").val(detail.sensor_keluar)

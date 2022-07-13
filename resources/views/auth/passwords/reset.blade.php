@@ -1,62 +1,53 @@
-@extends('layouts.auth')
+@extends('layouts.app', ['title' => 'Reset Password - SantriKoding.com'])
 
-@section('main-content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">{{ __('Reset Password') }}</h1>
-                                    </div>
+@section('content')
+    <div class="col-md-5">
+        <div class="card">
 
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger border-left-danger" role="alert">
-                                            <ul class="pl-4 my-2">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-
-                                    <form method="POST" action="{{ route('password.update') }}" class="user">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                                        <input type="hidden" name="token" value="{{ $token }}">
-
-                                        <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" name="email"
-                                                placeholder="{{ __('E-Mail Address') }}"
-                                                value="{{ $email ?? old('email') }}" required autofocus>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password"
-                                                placeholder="{{ __('Password') }}" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                name="password_confirmation" placeholder="{{ __('Confirm Password') }}"
-                                                required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                {{ __('Reset Password') }}
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+            <div class="card-body">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
                     </div>
-                </div>
+                @endif
+
+                <form method="POST" action="{{ route('password.update') }}">
+                    @csrf
+
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+                    <div class="form-group">
+                        <label class="font-weight-bold text-uppercase">Email Address</label>
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                            value="{{ $request->email ?? old('email') }}" required autocomplete="email" autofocus
+                            placeholder="Masukkan Alamat Elamil">
+                        @error('email')
+                            <div class="alert alert-danger mt-2">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold text-uppercase">Password</label>
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                            name="password" required autocomplete="new-password" placeholder="Masukkan Password Baru">
+                        @error('password')
+                            <div class="alert alert-danger mt-2">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold text-uppercase">Konfirmasi Password</label>
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                            required autocomplete="new-password" placeholder="Masukkan Konfirmasi Password Baru">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">RESET PASSWORD</button>
+                </form>
+
             </div>
         </div>
     </div>

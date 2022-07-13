@@ -10,17 +10,18 @@ use Illuminate\Http\Request;
 
 class Wisata extends Model
 {
-    public function getLokasi($id = '')
+
+
+    protected $casts = [
+        'map' => 'array'
+    ];
+
+    public function getLokasi()
     {
         $glokasi = DB::table('wisata')
             ->select('id_wisata', 'nama', 'alamat', 'gambar', 'map')->get();
-
-        // ->select('nama', 'alamat', 'gambar', 'map')
-        // ->where('id_wisata', $id)
-        // ->get();
         return $glokasi;
     }
-
     public function getSensorMasuk($wisata = '')
     {
         $gsensor = DB::table('sensor_masuk')
@@ -54,6 +55,10 @@ class Wisata extends Model
         return $keyword;
     }
     public function updateWisata(Request $request)
+    {
+    }
+
+    public function insertWisata($nama_wisata, $gambar, $tgl_keluar)
     {
     }
 }

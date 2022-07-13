@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EventFController;
-use App\Http\Controllers\EventBController;
+use App\Http\Controllers\PengunjungController;
 
 
 /*
@@ -20,13 +20,18 @@ use App\Http\Controllers\EventBController;
 */
 
 Route::get('/', [FrontController::class, 'index'])->name('keyword');
-Route::get('/events', [EventFController::class, 'index'])->name('event');
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/home/add', [HomeController::class, 'add']);
-Route::get('/home/edit/{id}', [HomeController::class, 'edit']);
+Route::get('/wisata/view-add', [HomeController::class, 'viewAddWisata'])->name('view.add.wisata');
+Route::post('/wisata/add', [HomeController::class, 'addWisata'])->name('add.wisata');
+Route::get('/wisata/view-edit/{id}', [HomeController::class, 'viewEditWisata'])->name('view.edit.wisata');
+Route::post('/wisata/edit/{id}', [HomeController::class, 'editWisata'])->name('edit.wisata');
+Route::get('/wisata/delete/{id}', [HomeController::class, 'deleteWisata'])->name('delete.wisata');
+
+//pengunjung
+Route::get('/pengunjung', [PengunjungController::class, 'index'])->name('pengunjung');
 
 // Profile
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

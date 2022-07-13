@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class ProfileController extends Controller
 {
@@ -16,11 +19,7 @@ class ProfileController extends Controller
 
     public function index()
     {
-        $data = [
-            'tittle' => 'Home / Profile'
-        ];
-        return view('profile', $data);
-        // return view('profile');
+        return view('profile');
     }
 
     public function update(Request $request)
@@ -31,14 +30,24 @@ class ProfileController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
             'current_password' => 'nullable|required_with:new_password',
             'new_password' => 'nullable|min:8|max:12|required_with:current_password',
-            'password_confirmation' => 'nullable|min:8|max:12|required_with:new_password|same:new_password'
-        ]);
+            'password_confirmation' => 'nullable|min:8|max:12|required_with:new_password|same:new_password',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
+        ]);
 
         $user = User::findOrFail(Auth::user()->id);
         $user->name = $request->input('name');
         $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $gambar = time() . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('img');
+            $image->move($destinationPath, $gambar);
+            File::delete('img/' . $user->image);
+            $user->image = $gambar;
+        }
 
         if (!is_null($request->input('current_password'))) {
             if (Hash::check($request->input('current_password'), $user->password)) {
@@ -50,6 +59,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile')->withSuccess('Profile updated successfully.');
+        return redirect()->route('profile')->withSuccess('Profile Berhasil Di Ubah.');
     }
 }

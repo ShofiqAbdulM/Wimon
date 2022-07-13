@@ -32,12 +32,10 @@
                                                 placeholder="{{ __('E-Mail Address') }}" value="{{ old('email') }}"
                                                 required autofocus>
                                         </div>
-
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" name="password"
                                                 placeholder="{{ __('Password') }}" required>
                                         </div>
-
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" name="remember"
@@ -46,15 +44,12 @@
                                                     for="remember">{{ __('Remember Me') }}</label>
                                             </div>
                                         </div>
-
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-user btn-block">
                                                 {{ __('Login') }}
                                             </button>
                                         </div>
-
                                         <hr>
-
                                     </form>
 
 
@@ -66,12 +61,6 @@
                                         </div>
                                     @endif
 
-                                    {{-- @if (Route::has('register'))
-                                        <div class="text-center">
-                                            <a class="small"
-                                                href="{{ route('register') }}">{{ __('Create an Account!') }}</a>
-                                        </div>
-                                    @endif --}}
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@
     <title>{{ config('app.name', 'Login') }}</title>
 
     @include('layouts/aset/head')
+    @include('sweetalert::alert')
 
 </head>
 
