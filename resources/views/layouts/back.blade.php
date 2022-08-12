@@ -11,7 +11,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>{{ config('back.name', 'Wisata Monitoring Admin') }}</title>
 
     @include('layouts/aset/head')
-    @include('sweetalert::alert')
+    @include('layouts/aset/include')
+    @include('layouts/aset/flash')
 
 </head>
 
@@ -48,7 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-danger elevation-4">
             <!-- Brand Logo -->
-            <a href="/home" class="brand-link text-center pl-2">
+            <a href="/" class="brand-link text-center pl-2">
                 <img src="{{ asset('img') }}/wimon.svg" alt="AdminLTE Logo" class="img-circle elevation-3"
                     style="opacity: .8;max-width:3em">
             </a>
@@ -57,14 +58,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image ml-5 mr-2 text-center">
-                        <img src="{{ asset('img') }}/{{ Auth::user()->image }}" class="img-circle elevation-2"
-                            alt="User Image">
-                    </div>
-                    <div class="info pl-0 ml-2 mr-5">
-                        <a href="{{ route('keyword') }}" class="d-block"> {{ Auth::user()->name }}
-                        </a>
-                    </div>
+                    <a href="{{ route('profile') }}">
+                        <div class="image ml-5 mr-2 text-center">
+                            <img src="{{ asset('img') }}/{{ Auth::user()->image }}" class="img-circle elevation-2"
+                                alt="User Image">
+                        </div>
+                        {{-- <p class="d-block">{{ auth::user()->name }}</p> --}}
+                        <div class="info pl-0 ml-2 mr-5">
+                            <a href="{{ 'profile' }}" class="d-block">
+                                {{ Auth::user()->name }}
+                            </a>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Sidebar Menu -->
@@ -124,7 +129,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         @yield('content')
-                    </div><!-- /.row -->
+                    </div>
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -155,7 +160,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Apakah Anda Yakin Ingin Keluar</div>
                 <div class="modal-footer">
                     <button class="btn btn-link" type="button" data-dismiss="modal">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" href="{{ route('logout') }}"
@@ -192,11 +196,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('AdminLTE') }}/plugins/jsgrid/jsgrid.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('AdminLTE') }}/dist/js/adminlte.min.js"></script>
-    <script src="{{ asset('AdminLTE') }}/plugins/flot/jquery.flot.js"></script>
-    <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-    <script src="{{ asset('AdminLTE') }}/plugins/flot/plugins/jquery.flot.resize.js"></script>
-    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-    <script src="{{ asset('AdminLTE') }}/plugins/flot/plugins/jquery.flot.pie.js"></script>
+
     <script src="{{ asset('js') }}/app.js"></script>
     <script>
 
@@ -210,6 +210,43 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#pengunjung_wrapper .col-md-6:eq(0)');
+        });
+        $('.alert-delete').on('click', function(event) {
+            event.preventDefault();
+            const url = $(this).attr('href');
+            swal.fire({
+                title: 'Apa Anda Yakin Ingin Menghapus Data?.',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+            }).then(function(value) {
+                if (value.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+        $(function() {
+            @if (Session('success'))
+                Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '{{ Session::get('success') }}',
+                showConfirmButton: false,
+                timer: 1500
+                })
+            @endif
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '{{ $error }}',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                @endforeach
+            @endif
         });
     </script>
 </body>

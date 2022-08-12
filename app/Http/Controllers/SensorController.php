@@ -7,7 +7,6 @@ use App\Models\Wisata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
-use RealRashid\SweetAlert\Facades\Alert;
 
 
 
@@ -21,7 +20,7 @@ class SensorController extends Controller
 
     public function getPengunjungMasuk()
     {
-        $sensor_masuk = $this->Wisata->getSensorMasuk(1);
+        $sensor_masuk = $this->Wisata->getSensorMasuk();
         return response()->json([
             'status_code' => 200,
             'success' => true,

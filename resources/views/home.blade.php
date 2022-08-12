@@ -3,20 +3,56 @@
 @section('content')
     <div class="container">
         <h1 class="m-0">{{ $tittle }}</h1>
-
-        @if (session('success'))
-            <div class="alert alert-success border-left-success alert-dismissible fade show mt-2 mb-0" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+        @if ($errors->any())
+            <script>
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '{{ Session::get('$errors->all()') }}',
+                    showConfirmButton: false,
+                })
+            </script>
         @endif
-
     </div>
-    <div class="container mt-3">
+    <div class="container mt-2">
 
         <div class="row justify-content-center">
+            <div class="col-md-12">
+                <section class="content">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="fas fa-user"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Jumlah Admin Pengguna</span>
+                                    <span class="info-box-number" style="font-size: 20px">{{ auth::user()->id }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="fas fa-umbrella-beach"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Total Wisata</span>
+                                    <span class="info-box-number" style="font-size: 20px">{{ auth::user()->id }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-danger"><i
+                                        class="fas fa-users
+                                    "></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Total Pengunjung</span>
+                                    <span class="info-box-number" style="font-size: 20px">{{ auth::user()->id }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
             <div class="col-md-12 mt-2">
                 <section class="content">
 
@@ -32,12 +68,21 @@
                             </div>
                         </div>
                         <div class="card-body pt-2">
-                            <div class="card-tools text-right pb-0">
-                                <a href="{{ route('view.add.wisata') }}" class="text-white">
-                                    <button type="button" class="btn btn-primary btn-sm btn-flat">
-                                        <i class="fas fa-plus mr-2"></i>ADD
-                                    </button>
-                                </a>
+                            <div class="row">
+                                <div class="col-sm-4 text-right pb-0">
+                                    <form action="/wisata/cari" method="GET">
+                                        <input type="text" name="cari" placeholder="Cari Pegawai .."
+                                            value="{{ old('cari') }}">
+                                        <input type="submit" value="CARI">
+                                    </form>
+                                </div>
+                                <div class="col-sm-2 text-right pb-0">
+                                    <a href="{{ route('view.add.wisata') }}" class="text-white">
+                                        <button type="button" class="btn btn-primary btn-sm btn-flat">
+                                            <i class="fas fa-plus mr-2"></i>ADD
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                             <table id="example1" class="table table-bordered table-striped mt-2">
 
@@ -59,7 +104,7 @@
                                             <td style="width: 10em"> <img
                                                     src="{{ asset('gambar') }}/{{ $keey->gambar }}"
                                                     alt="{{ $keey->nama }}" style="max-width: 10em"></td>
-                                            <td style="max-width: 5px">
+                                            <td style="max-width: 1px">
                                                 <a class="btn btn-info btn-sm"
                                                     href="{{ route('view.edit.wisata', [$keey->id_wisata]) }}">
                                                     <i class="fas fa-pencil-alt">
@@ -67,9 +112,8 @@
                                                     Edit
                                                 </a>
                                                 @csrf
-                                                <a class="btn btn-danger btn-sm"
-                                                    href="{{ route('delete.wisata', [$keey->id_wisata]) }}"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                <a class="btn btn-danger btn-sm alert-delete"
+                                                    href="{{ route('delete.wisata', [$keey->id_wisata]) }}">
                                                     <i class="fas fa-trash">
                                                     </i>
                                                     Delete
@@ -89,26 +133,4 @@
             </div>
         </div>
     </div>
-    <script>
-        const inputs = document.querySelectorAll(".input");
-
-
-        function addcl() {
-            let parent = this.parentNode.parentNode;
-            parent.classList.add("focus");
-        }
-
-        function remcl() {
-            let parent = this.parentNode.parentNode;
-            if (this.value == "") {
-                parent.classList.remove("focus");
-            }
-        }
-
-
-        inputs.forEach(input => {
-            input.addEventListener("focus", addcl);
-            input.addEventListener("blur", remcl);
-        });
-    </script>
 @endsection

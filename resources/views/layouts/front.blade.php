@@ -12,11 +12,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     @include('layouts/aset/head')
     @include('layouts/aset/include')
+    @include('layouts/aset/flash')
 
 </head>
 
 <body class="hold-transition layout-top-nav">
-    @include('sweetalert::alert')
 
     <div class="wrapper">
 
@@ -76,6 +76,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('AdminLTE') }}/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+    <script>
+        $(function() {
+            @if (Session('success'))
+                Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '{{ Session::get('success') }}',
+                showConfirmButton: false,
+                timer: 1500
+                })
+            @endif
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '{{ $error }}',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                @endforeach
+            @endif
+        });
+    </script>
 </body>
 
 </html>

@@ -5,23 +5,34 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 
 class Wisata extends Model
 {
+    // Pemanggilan seluruh data menggunakan $keyword di dalam file blade
+    public function allLokasi()
+    {
+        // $keyword = DB::table 2wisata')
+        //     ->select('id_wisata', 'nama', 'alamat', 'gambar', 'id_user', 'map')
+        //     ->join('users', 'users.id', '=', 'wisata.id_user')
+        //     // ->where('id_user', '=', 'id')
+        //     ->get();
+        $keyword = DB::table('wisata')
+            ->select('id_wisata', 'nama', 'alamat', 'gambar', 'map')->get();
+        return $keyword;
+    }
 
-
-    protected $casts = [
-        'map' => 'array'
-    ];
-
-    public function getLokasi()
+    //get data api Wisata
+    public function getLokasi($id = '')
     {
         $glokasi = DB::table('wisata')
-            ->select('id_wisata', 'nama', 'alamat', 'gambar', 'map')->get();
+            ->select('nama', 'alamat', 'gambar', 'map')
+            ->where('id_wisata',  $id)
+            ->get();
         return $glokasi;
     }
+
+    // Data Sensor
     public function getSensorMasuk($wisata = '')
     {
         $gsensor = DB::table('sensor_masuk')
@@ -31,7 +42,6 @@ class Wisata extends Model
             ->count();
         return $gsensor;
     }
-
     public function getSensorKeluar($wisata = '')
     {
         $gsensor = DB::table('sensor_keluar')
@@ -40,25 +50,5 @@ class Wisata extends Model
             ->whereDate('sensor_keluar.tgl_keluar', Carbon::now())
             ->count();
         return $gsensor;
-    }
-
-    public function userLokasi($user = '')
-    {
-        $keyword = DB::table('wisata')
-            ->select('id_wisata', 'nama', 'alamat', 'gambar', 'map')->where('id_user', '=', $user)->get();
-        return $keyword;
-    }
-    public function allLokasi()
-    {
-        $keyword = DB::table('wisata')
-            ->select('id_wisata', 'nama', 'alamat', 'gambar', 'map')->get();
-        return $keyword;
-    }
-    public function updateWisata(Request $request)
-    {
-    }
-
-    public function insertWisata($nama_wisata, $gambar, $tgl_keluar)
-    {
     }
 }

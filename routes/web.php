@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Server\HomeController;
+// use App\Http\Controllers\Server\HomeController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PengunjungController;
@@ -29,6 +29,9 @@ Route::post('/wisata/add', [HomeController::class, 'addWisata'])->name('add.wisa
 Route::get('/wisata/view-edit/{id}', [HomeController::class, 'viewEditWisata'])->name('view.edit.wisata');
 Route::post('/wisata/edit/{id}', [HomeController::class, 'editWisata'])->name('edit.wisata');
 Route::get('/wisata/delete/{id}', [HomeController::class, 'deleteWisata'])->name('delete.wisata');
+Route::get('/wisata/cari', [HomeController::class, 'cari']);
+
+
 
 //pengunjung
 Route::get('/pengunjung', [PengunjungController::class, 'index'])->name('pengunjung');
@@ -38,4 +41,4 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 // Route API Data Wisata
-Route::get('/wisata/{id}', [FrontController::class, 'lokasi']);
+Route::get('/wisata/{id_wisata}', [FrontController::class, 'lokasi']);

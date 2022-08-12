@@ -98,7 +98,7 @@
 
         // var geo = $(this).data('map');
         var geoLayer;
-        $.getJSON('geojson/map.geojson',
+        $.getJSON('geojson/map_kode.geojson',
             function(json) {
                 geoLayer = L.geoJson(json, {
                     style: function(feature) {
@@ -110,22 +110,20 @@
                         };
                     },
                     onEachFeature: function(feature, layer) {
-                        layer.on('click', (e) => {
-                            $.getJSON('wisata/' + feature.properties.id, function(
-                                detail) {
-                                // console.log(detail.sensor_masuk[0].jumlah_masuk);
+                        layer.on('click', (f) => {
+                            $.getJSON('wisata/' + feature.properties.id, function(detail) {
                                 var html =
                                     '<div align="center"><p style="color:#FF0000;  font-family:Helvetica Neue; font-size:25px;" class="text-uppercase"><strong>' +
                                     detail.lokasi[0].nama +
                                     '</strong></p>';
                                 html += '<img src="gambar/' + detail.lokasi[0]
                                     .gambar +
-                                    '" width="500em" height="350em"></div>';
-
-                                var style = {
-                                    'maxWidth': '5000',
-                                }
-                                L.popup(style)
+                                    '" width="300px"></div>';
+                                // // specify popup options
+                                // var customOptions = {
+                                //     'maxWidth': '5000',
+                                // }
+                                L.popup()
                                     .setLatLng(layer.getBounds()
                                         .getCenter())
                                     .setContent(html)
@@ -136,7 +134,6 @@
                                 $("#keluar").val(detail.sensor_keluar)
                                     .keyup();
                                 $("#saat_ini").val(detail.pengunjung).keyup();
-                                // console.log(detail.index.pengunjung);
 
                             });
                         })

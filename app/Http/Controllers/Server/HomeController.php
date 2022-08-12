@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Server;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Wisata;
-use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -50,9 +50,10 @@ class HomeController extends Controller
     public function addWisata(Request $request)
     {
         $request->validate([
+            'kode_wisata' => 'required',
             'nama_wisata' => 'required',
             'alamat_wisata' => 'required',
-            'gambar_wisata' => 'required',
+            'gambar_wisata' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             //'map_wisata' => 'required',
             // 'id_user' => 'required',
         ]);
@@ -63,14 +64,16 @@ class HomeController extends Controller
         // $map = $request->file('map_wisata');
         // $map->move('geojson', $request->nama_wisata . '-' . $map->getClientOriginalName());
         //dd("success");
-        $gsensor = DB::table('wisata')->insert(['nama' => $request->nama_wisata, 'alamat' => $request->alamat_wisata, 'gambar' => $request->nama_wisata . '-' . $gambar->getClientOriginalName()]);
+        $gsensor = DB::table('wisata')->insert(['id_wisata' => $request->kode_wisata, 'nama' => $request->nama_wisata, 'alamat' => $request->alamat_wisata, 'gambar' => $request->nama_wisata . '-' . $gambar->getClientOriginalName()]);
 
-        return redirect('home');
+        return redirect('home')
+            ->with('success', 'Data Telah Di Tambahkan!');
     }
 
     public function editWisata(Request $request, $id)
     {
         $request->validate([
+            'kode_wisata' => 'required',
             'nama_wisata' => 'required',
             'alamat_wisata' => 'required',
             'gambar_wisata' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -86,18 +89,20 @@ class HomeController extends Controller
             $destinationPath = public_path('gambar');
             $image->move($destinationPath, $gambar);
             File::delete('gambar/' . $wisata->gambar);
-            $wisata = DB::table('wisata')->where('id_wisata', 1)->update(array(
+            $wisata = DB::table('wisata')->where('id_wisata', $id)->update(array(
+                'id_wisata' => $request->kode_wisata,
                 'nama' => $request->nama_wisata,
                 'alamat' => $request->alamat_wisata,
                 'gambar' => $gambar
             ));
-            return redirect()->route('home')->withSuccess('Profile Berhasil Di Ubah.');
+            return redirect()->route('home')->with('ubah', 'Data Berhasil Di Ubah.');
         } else {
-            $wisata = DB::table('wisata')->where('id_wisata', 1)->update(array(
+            $wisata = DB::table('wisata')->where('id_wisata', $id)->update(array(
+                'id_wisata' => $request->kode_wisata,
                 'nama' => $request->nama_wisata,
                 'alamat' => $request->alamat_wisata
             ));
-            return redirect()->route('home')->withSuccess('Profile Berhasil Di Ubah.');
+            return redirect()->route('home')->with('ubah', 'Data Berhasil Di Ubah.');
         }
     }
 
@@ -107,14 +112,31 @@ class HomeController extends Controller
 
         return view('wisata.w_edit', ['detail_wisata' => $wisata]);
     }
+    public function cari(Request $request)
+    {
+        $data = [
+            'tittle' => 'Dashboard / Wisata'
+        ];
+        // menangkap data pencarian
+        $cari = $request->cari;
 
+        // mengambil data dari table pegawai sesuai pencarian data
+        $keyword = DB::table('wisata')
+            ->where('nama', 'like', "%" . $cari . "%")
+            ->paginate();
+
+        // mengirim data pegawai ke view index
+        return view('home', compact('keyword'), $data);
+    }
     public function deleteWisata($id)
     {
+
         $wisata = DB::table('wisata')->where('id_wisata', $id)->first();
         File::delete('gambar/' . $wisata->gambar);
         $hapus = DB::table('wisata')->where('id_wisata', $id)->delete();
 
-        return redirect()->back()->withSuccess('Wisata Berhasil Di Hapus.');
+        return redirect()->back()
+            ->with('warning', 'Data Telah Di Hapus');
     }
 
     /**
@@ -123,13 +145,4 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
-
-    public function lokasi($id = '')
-    {
-        $sensor = $this->Wisata->getSensor($id);
-
-        $lokasi = $this->Wisata->getLokasi($id);
-        return response()->json(['lokasi' => $lokasi, 'sensor' => $sensor]);
-    }
 }

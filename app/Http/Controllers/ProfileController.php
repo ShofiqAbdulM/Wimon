@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use RealRashid\SweetAlert\Facades\Alert;
 
 
 class ProfileController extends Controller
@@ -59,6 +58,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile')->withSuccess('Profile Berhasil Di Ubah.');
+        return redirect()->back()->with('ubah', 'Profile Berhasil Di Ubah.');
     }
 }
