@@ -67,16 +67,15 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body pt-2">
+                        <div class="card-body pt-2 table-responsive pad">
                             <div class="row">
-                                <div class="col-sm-4 text-right pb-0">
+                                <div class="col-sm-9">
                                     <form action="/wisata/cari" method="GET">
-                                        <input type="text" name="cari" placeholder="Cari Pegawai .."
-                                            value="{{ old('cari') }}">
-                                        <input type="submit" value="CARI">
+                                        <input type="text" name="cari" placeholder="Cari Wisata..."
+                                            value="{{ old('cari') }}" style="width: 100%;">
                                     </form>
                                 </div>
-                                <div class="col-sm-2 text-right pb-0">
+                                <div class="col-sm-3">
                                     <a href="{{ route('view.add.wisata') }}" class="text-white">
                                         <button type="button" class="btn btn-primary btn-sm btn-flat">
                                             <i class="fas fa-plus mr-2"></i>ADD
@@ -85,7 +84,6 @@
                                 </div>
                             </div>
                             <table id="example1" class="table table-bordered table-striped mt-2">
-
                                 <thead>
                                     <tr>
                                         <th>NO</th>
